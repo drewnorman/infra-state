@@ -40,3 +40,15 @@ variable "state_object_admin_members" {
   type        = set(string)
   default     = []
 }
+
+variable "recipes_bucket_name" {
+  description = "Globally unique Cloud Storage bucket name for the recipes Terraform/OpenTofu state."
+  type        = string
+  default     = "drew-recipes-tofu-state"
+}
+
+variable "recipes_state_object_admin_members" {
+  description = "Additional IAM members granted object admin access to the recipes state bucket."
+  type        = set(string)
+  default     = []
+}
