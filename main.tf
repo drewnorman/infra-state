@@ -63,3 +63,37 @@ resource "google_storage_bucket_iam_member" "recipes_state_object_admin" {
   role   = "roles/storage.objectAdmin"
   member = each.value
 }
+
+resource "google_storage_bucket" "maestorm_infra_state" {
+  name                        = var.maestorm_infra_bucket_name
+  location                    = var.location
+  storage_class               = "STANDARD"
+  uniform_bucket_level_access = true
+  public_access_prevention    = "enforced"
+  labels = merge(var.labels, {
+    project = "maestorm-infra"
+  })
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+
+    condition {
+      days_since_noncurrent_time = var.noncurrent_version_retention_days
+      with_state                 = "ARCHIVED"
+    }
+  }
+}
+
+resource "google_storage_bucket_iam_member" "maestorm_infra_state_object_admin" {
+  for_each = setunion(var.state_object_admin_members, var.maestorm_infra_state_object_admin_members)
+
+  bucket = google_storage_bucket.maestorm_infra_state.name
+  role   = "roles/storage.objectAdmin"
+  member = each.value
+}

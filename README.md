@@ -8,6 +8,7 @@ It currently creates:
 
 - `drew-infra-tofu-state` for shared infrastructure state.
 - `drew-recipes-tofu-state` for the `recipes` project state.
+- `drew-maestorm-infra-tofu-state` for the `maestorm-infra` project state.
 
 ## Usage
 
@@ -32,6 +33,14 @@ If the default recipes bucket name is already taken:
 tofu apply \
   -var="project_id=YOUR_GCP_PROJECT_ID" \
   -var="recipes_bucket_name=YOUR_UNIQUE_RECIPES_BUCKET_NAME"
+```
+
+If the default maestorm-infra bucket name is already taken:
+
+```sh
+tofu apply \
+  -var="project_id=YOUR_GCP_PROJECT_ID" \
+  -var="maestorm_infra_bucket_name=YOUR_UNIQUE_MAESTORM_INFRA_BUCKET_NAME"
 ```
 
 To grant explicit object access for your user or CI service account:
@@ -60,6 +69,17 @@ terraform {
   backend "gcs" {
     bucket = "drew-recipes-tofu-state"
     prefix = "prod"
+  }
+}
+```
+
+For `maestorm-infra`, use the `maestorm_infra_prod_backend_block` output:
+
+```hcl
+terraform {
+  backend "gcs" {
+    bucket = "drew-maestorm-infra-tofu-state"
+    prefix = "envs/prod"
   }
 }
 ```

@@ -8,6 +8,11 @@ output "recipes_bucket_name" {
   value       = google_storage_bucket.recipes_state.name
 }
 
+output "maestorm_infra_bucket_name" {
+  description = "Cloud Storage bucket name for maestorm-infra remote state."
+  value       = google_storage_bucket.maestorm_infra_state.name
+}
+
 output "homelab_backend_config" {
   description = "Backend configuration for this homelab root module."
   value = {
@@ -43,6 +48,26 @@ output "recipes_backend_block" {
       backend "gcs" {
         bucket = "${google_storage_bucket.recipes_state.name}"
         prefix = "prod"
+      }
+    }
+  EOT
+}
+
+output "maestorm_infra_prod_backend_config" {
+  description = "Backend configuration for the maestorm-infra prod root module."
+  value = {
+    bucket = google_storage_bucket.maestorm_infra_state.name
+    prefix = "envs/prod"
+  }
+}
+
+output "maestorm_infra_prod_backend_block" {
+  description = "Backend block to add to the maestorm-infra prod root module after the bucket exists."
+  value       = <<-EOT
+    terraform {
+      backend "gcs" {
+        bucket = "${google_storage_bucket.maestorm_infra_state.name}"
+        prefix = "envs/prod"
       }
     }
   EOT

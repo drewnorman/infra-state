@@ -52,3 +52,15 @@ variable "recipes_state_object_admin_members" {
   type        = set(string)
   default     = []
 }
+
+variable "maestorm_infra_bucket_name" {
+  description = "Globally unique Cloud Storage bucket name for the maestorm-infra Terraform/OpenTofu state."
+  type        = string
+  default     = "drew-maestorm-infra-tofu-state"
+}
+
+variable "maestorm_infra_state_object_admin_members" {
+  description = "Additional IAM members granted object admin access to the maestorm-infra state bucket."
+  type        = set(string)
+  default     = []
+}
