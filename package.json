@@ -1,0 +1,13 @@
+{
+  "name": "@drew/infra-state",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "yarn@4.9.2",
+  "scripts": {
+    "commitlint": "commitlint"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1"
+  }
+}

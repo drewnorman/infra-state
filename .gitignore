@@ -1,4 +1,7 @@
 .terraform/
+node_modules/
+.yarn/
+.pnp.*
 terraform.tfstate
 terraform.tfstate.*
 *.tfvars

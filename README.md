@@ -15,12 +15,17 @@ Canonical prefixes in the shared bucket are exported by `state_backend_prefixes`
 
 ## Usage
 
-Authenticate to GCP, then run:
+Enter the Nix flake dev shell, authenticate to GCP, then run:
 
 ```sh
+nix develop
 tofu init
 tofu apply -var="project_id=YOUR_GCP_PROJECT_ID"
 ```
+
+This repo enforces conventional commit messages with Commitlint in GitHub
+Actions. Use `yarn install` and `yarn commitlint` from the dev shell for local
+checks.
 
 If the default bucket name is already taken:
 
