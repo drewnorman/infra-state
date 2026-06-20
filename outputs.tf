@@ -3,16 +3,6 @@ output "bucket_name" {
   value       = google_storage_bucket.state.name
 }
 
-output "recipes_bucket_name" {
-  description = "Cloud Storage bucket name for recipes remote state."
-  value       = google_storage_bucket.recipes_state.name
-}
-
-output "maestorm_infra_bucket_name" {
-  description = "Cloud Storage bucket name for maestorm-infra remote state."
-  value       = google_storage_bucket.maestorm_infra_state.name
-}
-
 output "homelab_backend_config" {
   description = "Backend configuration for this homelab root module."
   value = {
@@ -33,11 +23,19 @@ output "homelab_backend_block" {
   EOT
 }
 
+output "state_backend_prefixes" {
+  description = "Canonical OpenTofu backend prefixes in the shared state bucket."
+  value = {
+    homelab = "homelab/prod"
+    recipes = "recipes/prod"
+  }
+}
+
 output "recipes_backend_config" {
   description = "Backend configuration for the recipes root module."
   value = {
-    bucket = google_storage_bucket.recipes_state.name
-    prefix = "prod"
+    bucket = google_storage_bucket.state.name
+    prefix = "recipes/prod"
   }
 }
 
@@ -46,28 +44,8 @@ output "recipes_backend_block" {
   value       = <<-EOT
     terraform {
       backend "gcs" {
-        bucket = "${google_storage_bucket.recipes_state.name}"
-        prefix = "prod"
-      }
-    }
-  EOT
-}
-
-output "maestorm_infra_prod_backend_config" {
-  description = "Backend configuration for the maestorm-infra prod root module."
-  value = {
-    bucket = google_storage_bucket.maestorm_infra_state.name
-    prefix = "envs/prod"
-  }
-}
-
-output "maestorm_infra_prod_backend_block" {
-  description = "Backend block to add to the maestorm-infra prod root module after the bucket exists."
-  value       = <<-EOT
-    terraform {
-      backend "gcs" {
-        bucket = "${google_storage_bucket.maestorm_infra_state.name}"
-        prefix = "envs/prod"
+        bucket = "${google_storage_bucket.state.name}"
+        prefix = "recipes/prod"
       }
     }
   EOT
